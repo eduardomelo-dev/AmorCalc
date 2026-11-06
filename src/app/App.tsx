@@ -8,6 +8,7 @@ import { CharacterCard } from '../components/layout/CharacterCard';
 import { getCharacterForTab } from '../characters/charactersData';
 import { CalculatorView } from '../features/calculator/CalculatorView';
 import { GraphView } from '../features/graphs/GraphView';
+import { FunctionsView } from '../features/functions/FunctionsView';
 import { HistoryEntry } from '../types/calculator';
 
 export const App: React.FC = () => {
@@ -109,7 +110,8 @@ export const App: React.FC = () => {
               />
             )}
             {activeTab === 'graphs' && <GraphView theme={theme} />}
-            {activeTab !== 'calculator' && activeTab !== 'graphs' && (
+            {activeTab === 'functions' && <FunctionsView />}
+            {activeTab !== 'calculator' && activeTab !== 'graphs' && activeTab !== 'functions' && (
               <div className="p-6 bg-white/70 dark:bg-amor-dark-surface/70 rounded-3xl border border-pink-200 dark:border-pink-900/50 text-center">
                 <p className="text-base font-bold text-pink-800 dark:text-pink-200">
                   Módulo {activeTab.toUpperCase()}
