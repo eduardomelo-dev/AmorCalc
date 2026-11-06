@@ -12,6 +12,7 @@ interface CalculatorViewProps {
   onAddHistory: (entry: Omit<HistoryEntry, 'id' | 'timestamp'>) => void;
   onClearHistory: () => void;
   onSelectHistoryItem: (expression: string) => void;
+  initialExpression?: string;
 }
 
 export const CalculatorView: React.FC<CalculatorViewProps> = ({
@@ -20,6 +21,7 @@ export const CalculatorView: React.FC<CalculatorViewProps> = ({
   onAddHistory,
   onClearHistory,
   onSelectHistoryItem,
+  initialExpression,
 }) => {
   const {
     expression,
@@ -36,6 +38,12 @@ export const CalculatorView: React.FC<CalculatorViewProps> = ({
     memoryAdd,
     memorySubtract,
   } = useCalculator({ angleMode, onAddHistory });
+
+  useEffect(() => {
+    if (initialExpression) {
+      setExpressionDirectly(initialExpression);
+    }
+  }, [initialExpression, setExpressionDirectly]);
 
   // Atalhos de teclado físicos
   useEffect(() => {

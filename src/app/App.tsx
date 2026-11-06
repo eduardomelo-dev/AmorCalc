@@ -13,7 +13,10 @@ import { EquationsView } from '../features/equations/EquationsView';
 import { StatisticsView } from '../features/statistics/StatisticsView';
 import { ConversionsView } from '../features/conversions/ConversionsView';
 import { FormulasView } from '../features/formulas/FormulasView';
+import { HistoryView } from '../features/history/HistoryView';
+import { SettingsView } from '../features/settings/SettingsView';
 import { HistoryEntry } from '../types/calculator';
+import { AppSettings } from '../types/theme';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('calculator');
@@ -24,6 +27,25 @@ export const App: React.FC = () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
   const [angleMode, setAngleMode] = useState<'deg' | 'rad'>('deg');
+  const [activeExpression, setActiveExpression] = useState<string>('');
+
+  const [settings, setSettings] = useState<AppSettings>(() => {
+    const saved = localStorage.getItem('amorcalc_settings');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // fallback
+      }
+    }
+    return {
+      theme: 'light',
+      angleMode: 'deg',
+      soundEffects: false,
+      precision: 10,
+      showCharacterHelper: true,
+    };
+  });
 
   const [historyList, setHistoryList] = useState<HistoryEntry[]>(() => {
     const saved = localStorage.getItem('amorcalc_history');
@@ -36,6 +58,10 @@ export const App: React.FC = () => {
     }
     return [];
   });
+
+  useEffect(() => {
+    localStorage.setItem('amorcalc_settings', JSON.stringify(settings));
+  }, [settings]);
 
   useEffect(() => {
     localStorage.setItem('amorcalc_history', JSON.stringify(historyList));
@@ -66,11 +92,45 @@ export const App: React.FC = () => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    const next = theme === 'light' ? 'dark' : 'light';
+    setTheme(next);
+    setSettings((prev) => ({ ...prev, theme: next }));
   };
 
   const toggleAngleMode = () => {
-    setAngleMode((prev) => (prev === 'deg' ? 'rad' : 'deg'));
+    const next = angleMode === 'deg' ? 'rad' : 'deg';
+    setAngleMode(next);
+    setSettings((prev) => ({ ...prev, angleMode: next }));
+  };
+
+  const updateSettings = (updates: Partial<AppSettings>) => {
+    setSettings((prev) => {
+      const updated = { ...prev, ...updates };
+      if (updates.theme) setTheme(updates.theme);
+      if (updates.angleMode) setAngleMode(updates.angleMode);
+      return updated;
+    });
+  };
+
+  const toggleFavorite = (id: string) => {
+    setHistoryList((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, favorite: !item.favorite } : item))
+    );
+  };
+
+  const removeItem = (id: string) => {
+    setHistoryList((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const clearAllData = () => {
+    setHistoryList([]);
+    localStorage.removeItem('amorcalc_history');
+    localStorage.removeItem('amorcalc_memory');
+  };
+
+  const restoreCalculation = (expr: string) => {
+    setActiveExpression(expr);
+    setActiveTab('calculator');
   };
 
   const character = getCharacterForTab(activeTab);
@@ -98,7 +158,7 @@ export const App: React.FC = () => {
         {/* Main Content Area */}
         <main className="flex-1 p-3 sm:p-5 lg:p-6 min-w-0 flex flex-col gap-5">
           {/* Character Banner Card */}
-          <CharacterCard character={character} />
+          {settings.showCharacterHelper && <CharacterCard character={character} />}
 
           {/* Tab Content Container */}
           <div className="flex-1" id="tab-content">
@@ -106,10 +166,11 @@ export const App: React.FC = () => {
               <CalculatorView
                 angleMode={angleMode}
                 historyList={historyList}
+                initialExpression={activeExpression}
                 onAddHistory={addHistoryItem}
                 onClearHistory={clearHistory}
                 onSelectHistoryItem={(expr) => {
-                  console.log('Selecionou histórico:', expr);
+                  setActiveExpression(expr);
                 }}
               />
             )}
@@ -119,21 +180,21 @@ export const App: React.FC = () => {
             {activeTab === 'statistics' && <StatisticsView />}
             {activeTab === 'conversions' && <ConversionsView />}
             {activeTab === 'formulas' && <FormulasView />}
-            {activeTab !== 'calculator' &&
-              activeTab !== 'graphs' &&
-              activeTab !== 'functions' &&
-              activeTab !== 'equations' &&
-              activeTab !== 'statistics' &&
-              activeTab !== 'conversions' &&
-              activeTab !== 'formulas' && (
-              <div className="p-6 bg-white/70 dark:bg-amor-dark-surface/70 rounded-3xl border border-pink-200 dark:border-pink-900/50 text-center">
-                <p className="text-base font-bold text-pink-800 dark:text-pink-200">
-                  Módulo {activeTab.toUpperCase()}
-                </p>
-                <p className="text-xs text-amor-muted dark:text-amor-dark-muted mt-1">
-                  Preparando módulo com {character.name}...
-                </p>
-              </div>
+            {activeTab === 'history' && (
+              <HistoryView
+                historyList={historyList}
+                onToggleFavorite={toggleFavorite}
+                onClearHistory={clearHistory}
+                onRemoveItem={removeItem}
+                onRestoreCalculation={restoreCalculation}
+              />
+            )}
+            {activeTab === 'settings' && (
+              <SettingsView
+                settings={settings}
+                onUpdateSettings={updateSettings}
+                onClearAllData={clearAllData}
+              />
             )}
           </div>
         </main>
