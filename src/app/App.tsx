@@ -10,6 +10,9 @@ import { CalculatorView } from '../features/calculator/CalculatorView';
 import { GraphView } from '../features/graphs/GraphView';
 import { FunctionsView } from '../features/functions/FunctionsView';
 import { EquationsView } from '../features/equations/EquationsView';
+import { StatisticsView } from '../features/statistics/StatisticsView';
+import { ConversionsView } from '../features/conversions/ConversionsView';
+import { FormulasView } from '../features/formulas/FormulasView';
 import { HistoryEntry } from '../types/calculator';
 
 export const App: React.FC = () => {
@@ -113,7 +116,16 @@ export const App: React.FC = () => {
             {activeTab === 'graphs' && <GraphView theme={theme} />}
             {activeTab === 'functions' && <FunctionsView />}
             {activeTab === 'equations' && <EquationsView />}
-            {activeTab !== 'calculator' && activeTab !== 'graphs' && activeTab !== 'functions' && activeTab !== 'equations' && (
+            {activeTab === 'statistics' && <StatisticsView />}
+            {activeTab === 'conversions' && <ConversionsView />}
+            {activeTab === 'formulas' && <FormulasView />}
+            {activeTab !== 'calculator' &&
+              activeTab !== 'graphs' &&
+              activeTab !== 'functions' &&
+              activeTab !== 'equations' &&
+              activeTab !== 'statistics' &&
+              activeTab !== 'conversions' &&
+              activeTab !== 'formulas' && (
               <div className="p-6 bg-white/70 dark:bg-amor-dark-surface/70 rounded-3xl border border-pink-200 dark:border-pink-900/50 text-center">
                 <p className="text-base font-bold text-pink-800 dark:text-pink-200">
                   Módulo {activeTab.toUpperCase()}
