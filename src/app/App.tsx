@@ -6,6 +6,8 @@ import { Sidebar } from '../components/layout/Sidebar';
 import { BottomNav } from '../components/layout/BottomNav';
 import { CharacterCard } from '../components/layout/CharacterCard';
 import { getCharacterForTab } from '../characters/charactersData';
+import { CalculatorView } from '../features/calculator/CalculatorView';
+import { HistoryEntry } from '../types/calculator';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('calculator');
@@ -16,6 +18,36 @@ export const App: React.FC = () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
   const [angleMode, setAngleMode] = useState<'deg' | 'rad'>('deg');
+
+  const [historyList, setHistoryList] = useState<HistoryEntry[]>(() => {
+    const saved = localStorage.getItem('amorcalc_history');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('amorcalc_history', JSON.stringify(historyList));
+  }, [historyList]);
+
+  const addHistoryItem = (entry: Omit<HistoryEntry, 'id' | 'timestamp'>) => {
+    const newEntry: HistoryEntry = {
+      ...entry,
+      id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+      timestamp: Date.now(),
+      favorite: false,
+    };
+    setHistoryList((prev) => [newEntry, ...prev]);
+  };
+
+  const clearHistory = () => {
+    setHistoryList([]);
+  };
 
   useEffect(() => {
     const root = document.documentElement;
@@ -65,10 +97,15 @@ export const App: React.FC = () => {
           {/* Tab Content Container */}
           <div className="flex-1" id="tab-content">
             {activeTab === 'calculator' && (
-              <div id="calculator-placeholder" className="p-4 bg-white/70 dark:bg-amor-dark-surface/70 rounded-3xl border border-pink-200 dark:border-pink-900/50">
-                <h2 className="text-lg font-bold text-pink-900 dark:text-pink-100">Calculadora Científica</h2>
-                <p className="text-xs text-pink-600 dark:text-pink-400 mt-1">Carregando painel de cálculo...</p>
-              </div>
+              <CalculatorView
+                angleMode={angleMode}
+                historyList={historyList}
+                onAddHistory={addHistoryItem}
+                onClearHistory={clearHistory}
+                onSelectHistoryItem={(expr) => {
+                  console.log('Selecionou histórico:', expr);
+                }}
+              />
             )}
             {activeTab !== 'calculator' && (
               <div className="p-6 bg-white/70 dark:bg-amor-dark-surface/70 rounded-3xl border border-pink-200 dark:border-pink-900/50 text-center">
