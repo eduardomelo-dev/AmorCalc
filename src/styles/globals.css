@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --pink-brand: #ed75b5;
+    --card-bg: rgba(255, 255, 255, 0.88);
+    --border-color: #f0c7dd;
+  }
+
+  .dark {
+    --card-bg: rgba(43, 26, 39, 0.88);
+    --border-color: #53324c;
+  }
+
+  body {
+    background-image: 
+      radial-gradient(circle at 10% 0%, rgba(253, 213, 232, 0.6), transparent 30rem),
+      radial-gradient(circle at 90% 100%, rgba(247, 184, 217, 0.4), transparent 35rem);
+    background-attachment: fixed;
+  }
+
+  .dark body {
+    background-color: #1a0f18;
+    background-image: 
+      radial-gradient(circle at 10% 0%, rgba(103, 35, 78, 0.35), transparent 30rem),
+      radial-gradient(circle at 90% 100%, rgba(75, 20, 56, 0.4), transparent 35rem);
+  }
+}
+
+/* Custom Soft Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f7b8d9;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ed75b5;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #53324c;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #8e3269;
+}
+
+/* uPlot AmorCalc Styling */
+.u-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.u-legend {
+  font-family: 'Quicksand', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 8px !important;
+}
+
+.uplot {
+  user-select: none;
+}
