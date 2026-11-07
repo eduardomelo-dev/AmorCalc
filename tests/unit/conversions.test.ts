@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { convertUnit, getAvailableCategories, getUnitsForCategory } from '../../src/math/conversions';
+import { convertUnit, getAvailableCategories, getUnitsForCategory } from '../../backend/src/math/conversions';
 
 describe('math/conversions', () => {
   it('converte comprimento: metros para quilômetros e centímetros', () => {

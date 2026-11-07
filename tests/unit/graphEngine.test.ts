@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { generateFunctionSeries, findCurveRootsAndExtrema } from '../../src/math/graphEngine';
+import { generateFunctionSeries, findCurveRootsAndExtrema } from '../../backend/src/math/graphEngine';
 
 describe('graphEngine', () => {
   it('gera pontos uniformes para uma função quadrática f(x) = x^2 - 4x + 3', () => {

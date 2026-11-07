@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { evaluateExpression, formatMathResult } from '../../src/math/evaluate';
+import { evaluateExpression, formatMathResult } from '../../backend/src/math/evaluate';
 
 describe('evaluateExpression', () => {
   it('realiza operações aritméticas básicas com precedência correta', () => {

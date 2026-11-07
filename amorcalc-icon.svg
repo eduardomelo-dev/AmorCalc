@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f472b6" />
+      <stop offset="100%" stop-color="#db2777" />
+    </linearGradient>
+  </defs>
+  <rect width="100" height="100" rx="26" fill="url(#pinkGrad)"/>
+  <path d="M50 80 C20 58 12 40 12 28 C12 16 22 10 32 10 C41 10 47 15 50 20 C53 15 59 10 68 10 C78 10 88 16 88 28 C88 40 80 58 50 80 Z" fill="#ffffff" opacity="0.95"/>
+  <!-- Sinal de + e - estilizado -->
+  <path d="M42 34 H58 M50 26 V42" stroke="#db2777" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M43 56 H57" stroke="#db2777" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Sparkles -->
+  <circle cx="78" cy="22" r="3" fill="#fef08a"/>
+</svg>

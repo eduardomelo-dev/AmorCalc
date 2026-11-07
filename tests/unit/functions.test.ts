@@ -3,7 +3,7 @@ import {
   analyzeLinearFunction,
   analyzeQuadraticFunction,
   analyzeModularFunction,
-} from '../../src/math/functions';
+} from '../../backend/src/math/functions';
 
 describe('math/functions', () => {
   describe('Função Afim / Linear f(x) = ax + b', () => {

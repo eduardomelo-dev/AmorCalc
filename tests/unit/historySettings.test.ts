@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { HistoryEntry } from '../../src/types/calculator';
+import { HistoryEntry } from '../../frontend/src/types/history';
 
 describe('Gerenciamento de Histórico e Configurações', () => {
   it('filtra histórico por categoria e itens favoritos', () => {

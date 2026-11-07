@@ -6,7 +6,7 @@ import {
   simplifyAlgebraic,
   computeSymbolicDerivative,
   computeSymbolicIntegral,
-} from '../../src/math/equations';
+} from '../../backend/src/math/equations';
 
 describe('math/equations (Nerdamer + KaTeX)', () => {
   describe('Resolução de Equações', () => {

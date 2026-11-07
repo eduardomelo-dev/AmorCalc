@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateStatistics, parseDataSet } from '../../src/math/statistics';
+import { calculateStatistics, parseDataSet } from '../../backend/src/math/statistics';
 
 describe('math/statistics', () => {
   it('faz parse correto de conjunto de dados a partir de string com espaços, vírgulas ou quebras de linha', () => {
