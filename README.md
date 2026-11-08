@@ -21,22 +21,41 @@ npm run build
 npm run preview
 ```
 
-## Abrir como aplicativo no Linux
+## Aplicativo para desktop
 
-Depois de instalar as dependências e gerar a versão de produção, instale o
-atalho no menu de aplicativos da sua conta:
+O AmorCalc usa Electron para abrir em uma janela própria, sem depender de um
+navegador ou de um servidor Python. Para desenvolver, execute:
 
 ```bash
-npm run install:desktop
+npm run electron:dev
 ```
 
-Procure por **AmorCalc** no menu do sistema. O atalho abre a versão compilada no
-navegador e inicia um servidor somente no endereço local do computador. Para
-iniciar manualmente, execute `./start-amorcalc.sh` na pasta do projeto. Se a
-porta padrão já estiver ocupada, informe outra, por exemplo:
-`AMORCALC_PORT=8081 ./start-amorcalc.sh`.
+Para gerar o instalador do sistema atual, use:
 
-No Linux, o atalho requer Python 3, `curl`, `xdg-open` e `desktop-file-validate`.
+```bash
+npm run desktop:linux
+npm run desktop:windows
+npm run desktop:mac
+```
+
+Cada comando deve ser executado no respectivo sistema operacional. No Linux,
+é gerado um `.AppImage`; no Windows, um instalador `.exe`; no macOS, um `.dmg`.
+O instalador do Windows cria atalhos no menu e na área de trabalho.
+Windows e macOS podem exibir avisos porque os instaladores ainda não são
+assinados digitalmente.
+
+O workflow de GitHub Actions também empacota as três plataformas em seus
+ambientes próprios. Depois de uma execução bem-sucedida, baixe os arquivos na
+seção **Actions → Build desktop installers → Artifacts** do repositório.
+
+Este aplicativo Electron destina-se a Linux, Windows e macOS. Electron não
+executa no Android; para celular será necessário disponibilizar uma versão
+web instalável (PWA) ou criar um aplicativo Android separado.
+
+Para criar um atalho de desenvolvimento no menu do Linux, compile a aplicação
+e execute `npm run install:desktop`. Para iniciar esse atalho, o projeto precisa
+continuar na mesma pasta e ter suas dependências instaladas; para distribuir a
+calculadora, prefira os instaladores nativos acima.
 
 ## Como o projeto está organizado
 

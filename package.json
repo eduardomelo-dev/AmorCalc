@@ -2,23 +2,23 @@
   "name": "amorcalc",
   "private": true,
   "version": "1.0.0",
+  "description": "Calculadora científica para cálculos, gráficos e estatística.",
+  "desktopName": "AmorCalc",
+  "author": "AmorCalc contributors",
   "type": "module",
+  "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "electron:dev": "concurrently -k -r \"vite --host 127.0.0.1\" \"wait-on http://127.0.0.1:5173 && electron . --dev\"",
+    "electron:start": "electron .",
+    "desktop:linux": "npm run build && electron-builder --linux AppImage",
+    "desktop:windows": "npm run build && electron-builder --win nsis",
+    "desktop:mac": "npm run build && electron-builder --mac dmg --universal",
     "install:desktop": "bash install-amorcalc.sh",
     "test": "vitest run",
     "test:watch": "vitest"
-  },
-  "dependencies": {
-    "katex": "^0.16.21",
-    "lucide-react": "^1.16.0",
-    "mathjs": "^14.3.0",
-    "nerdamer": "^1.1.13",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "uplot": "^1.6.31"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
@@ -29,11 +29,65 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^10.0.7",
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
     "jsdom": "^26.0.0",
+    "katex": "^0.16.21",
+    "lucide-react": "^1.16.0",
+    "mathjs": "^14.3.0",
+    "nerdamer": "^1.1.13",
     "postcss": "^8.5.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
+    "uplot": "^1.6.31",
     "vite": "^6.1.0",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.5",
+    "wait-on": "^9.5.1"
+  },
+  "build": {
+    "appId": "dev.eduardomelo.amorcalc",
+    "productName": "AmorCalc",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "asar": true,
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Education",
+      "icon": "build/icon.png",
+      "syncDesktopName": true
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AmorCalc"
+    },
+    "mac": {
+      "icon": "build/icon.icns",
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.education"
+    }
   }
 }

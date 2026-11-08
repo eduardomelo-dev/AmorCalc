@@ -12,6 +12,11 @@ if [[ ! -f "$APP_DIR/dist/index.html" ]]; then
   exit 1
 fi
 
+if [[ ! -x "$APP_DIR/node_modules/.bin/electron" ]]; then
+  printf 'Instale o Electron antes de criar o atalho:\n  npm install\n' >&2
+  exit 1
+fi
+
 if ! command -v desktop-file-validate >/dev/null 2>&1; then
   printf 'Não encontrei desktop-file-validate. Instale as ferramentas de validação de arquivos .desktop e tente novamente.\n' >&2
   exit 1
